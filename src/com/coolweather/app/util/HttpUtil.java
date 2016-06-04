@@ -7,15 +7,15 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class HttpUtil {
-	public static void sendHttpRequest(final String address, final HttpCallbackListener listener) {
+	
+	public static void sendHttpRequest(final String address,
+			final HttpCallbackListener listener) {
 		new Thread(new Runnable() {
-			
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				HttpURLConnection connection = null;
 				try {
-					URL url =new URL(address);
+					URL url = new URL(address);
 					connection = (HttpURLConnection) url.openConnection();
 					connection.setRequestMethod("GET");
 					connection.setConnectTimeout(8000);
@@ -28,10 +28,12 @@ public class HttpUtil {
 						response.append(line);
 					}
 					if (listener != null) {
+						// 回调onFinish()方法
 						listener.onFinish(response.toString());
 					}
 				} catch (Exception e) {
-					if (listener != null){
+					if (listener != null) {
+						// 回调onError()方法
 						listener.onError(e);
 					}
 				} finally {
@@ -42,4 +44,5 @@ public class HttpUtil {
 			}
 		}).start();
 	}
+
 }
